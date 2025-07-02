@@ -47,20 +47,19 @@
   color: #d76c94;
   margin-top: 20px;
 }
-.cart-btn {
-  margin-top: 25px;
-  padding: 10px 20px;
+.add-to-cart-btn {
+  margin-top: 15px;
+  padding: 8px 16px;
   background-color: #f8b6cd;
-  border: none;
-  border-radius: 8px;
   color: white;
   font-weight: bold;
-  font-family: cursive;
-  font-size: 15px;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
+  font-family: cursive;
   transition: background-color 0.3s ease;
 }
 
-.cart-btn:hover {
+.add-to-cart-btn:hover {
   background-color: #f28ab2;
 }

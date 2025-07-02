@@ -89,3 +89,19 @@ body.dark-mode .search-input {
   color: white;
   border-color: #666;
 }
+.cart-icon-wrapper {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #ff85a2;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: cursive;
+}

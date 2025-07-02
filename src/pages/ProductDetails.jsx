@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../redux/slices/cartSlice';
 import '../css/ProductDetails.css';
+import { toast } from 'react-toastify';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -14,6 +15,7 @@ function ProductDetails() {
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
+    toast.success("Product successfully added to cart 🛍️");
   };
 
   return (
@@ -26,7 +28,8 @@ function ProductDetails() {
         <p>{product.description}</p>
         <strong>${product.price}</strong>
 
-        <button className="cart-btn" onClick={handleAddToCart}>
+       <button className="add-to-cart-btn" onClick={handleAddToCart}>
+
           Add to Cart 🛍️
         </button>
       </div>

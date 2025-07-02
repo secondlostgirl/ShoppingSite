@@ -1,0 +1,91 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #df6b92; /* Yeni toz pembe tonu */
+  border-bottom: 1px solid #e67cbd;
+  transition: background-color 0.3s ease;
+  width: 100%; /* ✨ Ekran boyunca yayılmasını sağlar */
+  box-sizing: border-box; /* ✨ padding dahil genişlik kontrolü */
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: cursive;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.search-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-input {
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px;
+}
+
+.search-button {
+  padding: 8px 16px;
+  background-color: #d18ea2;
+  color: white;
+  font-size: 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #c17591;
+}
+
+.icon {
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.icon:hover {
+  color: #000;
+}
+
+/* === DARK MODE EKLEMELERİ === */
+body.dark-mode {
+  background-color: #762785;
+}
+
+body.dark-mode .header {
+  background-color: #2c2c2c;
+  border-color: #444;
+}
+
+body.dark-mode .logo-text {
+  color: #eee;
+}
+
+body.dark-mode .search-input {
+  background-color: #444;
+  color: white;
+  border-color: #666;
+}

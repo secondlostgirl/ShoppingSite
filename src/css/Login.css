@@ -1,0 +1,87 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffe6ee; /* 🔥 düz soft pembe */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+.login-form {
+  background-color: #fff;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  text-align: center;
+}
+
+.login-form h2 {
+  color: #d18ea2;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.login-form input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #fefefe;
+  transition: border 0.2s ease;
+}
+
+.login-form input:focus {
+  outline: none;
+  border: 1.5px solid #f28ab2;
+}
+
+.login-form button {
+  background-color: #f8b6cd;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: cursive;
+}
+
+.login-form button:hover {
+  background-color: #f28ab2;
+}
+
+.login-form a {
+  color: #888;
+  font-size: 0.9rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+
+.login-form a:hover {
+  color: #d18ea2;
+}
+.login-form p {
+  color: #777;
+}
+
+.login-form a {
+  color: #d18ea2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}
+

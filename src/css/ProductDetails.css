@@ -10,17 +10,48 @@
   font-family: cursive;
 }
 
-.image-section img {
+.image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-image {
   width: 350px;
   height: 350px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
+  margin-bottom: 20px;
 }
 
-.image-section img:hover {
+.main-image:hover {
   transform: scale(1.05);
+}
+
+.thumbnail-row {
+  display: flex;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.thumbnail:hover {
+  transform: scale(1.1);
+  border-color: #f28ab2;
+}
+
+.thumbnail.active {
+  border-color: #f28ab2;
 }
 
 .info-section {
@@ -47,9 +78,10 @@
   color: #d76c94;
   margin-top: 20px;
 }
+
 .add-to-cart-btn {
   margin-top: 15px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   background-color: #f8b6cd;
   color: white;
   font-weight: bold;

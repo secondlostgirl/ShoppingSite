@@ -161,6 +161,33 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.product-image-container {
+  position: relative;
+  display: inline-block;
+}
+.favorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.heart-icon {
+  font-size: 30px;
+  color: #ffd2e5;
+  transition: all 0.3s ease;
+}
+
+.heart-icon.favorited {
+  color: #ff6ea1;
+  transform: scale(1.5);
+  text-shadow: 0 0 5px #ff6ea1, 0 0 10px #ff6ea1, 0 0 20px #ffb6d5, 0 0 30px #ff6ea1;
+}
+
+
 
 
 

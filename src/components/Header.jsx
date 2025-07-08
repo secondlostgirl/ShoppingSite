@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetCartOnLogout } from "../redux/slices/cartSlice";
+import { FaHeart } from "react-icons/fa";
 
 function Header() {
   const [theme, setTheme] = useState(false);
@@ -63,6 +64,12 @@ function Header() {
         ) : (
           <LuSun className="icon" onClick={changeTheme} />
         )}
+        <div
+          className="favorite-icon-wrapper"
+          onClick={() => navigate("/favorites")}
+        >
+          <FaHeart className="icon" />
+        </div>
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>

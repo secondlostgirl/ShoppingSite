@@ -6,6 +6,7 @@ import cartRoutes from './routes/cart.js';
 import authRoutes from "./routes/auth.js"; // ✅ Login-register rotaları
 
 import Product from './models/Product.js';
+import favoriteRoutes from "./routes/favoriteRoutes.js";
 
 const app = express();
 const PORT = 5000;
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 app.use("/api/cart", cartRoutes);
 app.use("/api", authRoutes); // ✅ Login ve register burada olacak
+app.use("/api/favorites", favoriteRoutes);
 
 // MongoDB bağlantısı
 mongoose.connect('mongodb://localhost:27017/shopping', {

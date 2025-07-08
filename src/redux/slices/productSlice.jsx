@@ -20,41 +20,45 @@ export const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getAllProducts.pending, (state) => {
-      state.loading = true;
-    });
+    builder
+      .addCase(getAllProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllProducts.fulfilled, (state, action) => {
+        state.loading = false;
 
-    builder.addCase(getAllProducts.fulfilled, (state, action) => {
-      state.loading = false;
+        const customTitles = [
+          "Pink Bow Bag",
+          "Butterfly Heels",
+          "Lace Pink Dress",
+          "Heart-Shaped Sunglasses",
+          "Romantic Tulle Dress",
+          "Heart Earrings",
+          "Gemstone Ring Set",
+          "Strawberry Necklace",
+          "Kawaii Pink Dress",
+          "Pink Blue Dress",
+          "Heart Shaped Sunglasses",
+          "Heart Gold Ring",
+          "Pearl Necklace With Heart Gem",
+          "Butterfly Earrings",
+          "Pink Bag",
+          "Lolita Bag",
+          "Pink Converse",
+          "Strawberry Dress",
+          "Pink Lingerie",
+          "Butterfly Sunglasses",
+        ];
 
-      const customTitles = [
-        "Pink Bow Bag",
-        "Butterfly Heels",
-        "Lace Pink Dress",
-        "Heart-Shaped Sunglasses",
-        "Romantic Tulle Dress",
-        "Heart Earrings",
-        "Gemstone Ring Set",
-        "Strawberry Necklace",
-        "Kawaii Pink Dress",
-        "Pink Blue Dress",
-        "Heart Shaped Sunglasses",
-        "Heart Gold Ring",
-        "Pearl Necklace With Heart Gem",
-        "Butterfly Earrings",
-        "Pink Bag",
-        "Lolita Bag",
-        "Pink Converse",
-        "Strawberry Dress",
-        "Pink Lingerie",
-        "Butterfly Sunglasses",
-      ];
-
-      state.products = action.payload.map((product, index) => ({
-        ...product,
-        title: customTitles[index] || product.title,
-      }));
-    });
+        state.products = action.payload.map((product, index) => ({
+          ...product,
+          title: customTitles[index] || product.title,
+        }));
+      })
+      .addCase(getAllProducts.rejected, (state, action) => {
+        state.loading = false;
+        console.error("Ürünler yüklenemedi:", action.error.message);
+      });
   },
 });
 

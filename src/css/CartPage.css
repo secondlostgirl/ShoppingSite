@@ -29,6 +29,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .quantity-controls button {
@@ -39,6 +40,11 @@
   font-weight: bold;
   cursor: pointer;
   border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.quantity-controls button:hover {
+  background-color: #e57e9d;
 }
 
 .remove-btn {
@@ -49,6 +55,28 @@
   border-radius: 8px;
   margin-top: 10px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+  background-color: #e04d4d;
+}
+
+.clear-btn {
+  background-color: #dabfff;
+  color: #4a004e;
+  font-weight: bold;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 20px;
+}
+
+.clear-btn:hover {
+  background-color: #b08de6;
 }
 
 .cart-summary {

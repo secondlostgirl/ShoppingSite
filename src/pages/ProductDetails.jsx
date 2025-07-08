@@ -15,9 +15,23 @@ function ProductDetails() {
   const [showMagnifier, setShowMagnifier] = useState(false);
   const magnifierRef = useRef(null);
 
-  const handleAddToCart = () => {
+  // ✅ DOĞRU handleAddToCart
+  const handleAddToCart = async () => {
     dispatch(addToCart(product));
     toast.success("Product successfully added to cart 🛍️");
+
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser?.userId) return;
+
+    await fetch("http://localhost:5000/api/cart/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: storedUser.userId,
+        productId: product._id,
+        quantity: 1,
+      }),
+    });
   };
 
   useEffect(() => {
@@ -26,7 +40,6 @@ function ProductDetails() {
     }
   }, [product?.image]);
 
-  // Dışarı tıklama kontrolü
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -42,7 +55,6 @@ function ProductDetails() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  // Büyüteç ayarı
   useEffect(() => {
     if (!showMagnifier) return;
 

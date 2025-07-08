@@ -2,13 +2,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import User from './models/User.js';
+import cartRoutes from './routes/cart.js';
+import authRoutes from "./routes/auth.js"; // ✅ Login-register rotaları
+
+import Product from './models/Product.js';
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use("/api/cart", cartRoutes);
+app.use("/api", authRoutes); // ✅ Login ve register burada olacak
 
 // MongoDB bağlantısı
 mongoose.connect('mongodb://localhost:27017/shopping', {
@@ -17,53 +23,7 @@ mongoose.connect('mongodb://localhost:27017/shopping', {
 }).then(() => console.log("MongoDB bağlantısı başarılı"))
   .catch((err) => console.log("MongoDB bağlantı hatası:", err));
 
-// Kayıt olma endpoint'i
-app.post('/api/register', async (req, res) => {
-  try {
-    const { firstName, lastName, email, password } = req.body;
-
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
-
-    await newUser.save();
-    res.status(201).json({ message: 'User created successfully!' });
-  } catch (err) {
-    console.error('Kayıt hatası:', err);
-    res.status(500).json({ message: 'Sunucu hatası' });
-  }
-});
-
-// Giriş yapma endpoint'i
-app.post('/api/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    if (user.password !== password) {
-      return res.status(401).json({ message: "Incorrect password" });
-    }
-
-    res.status(200).json({ message: "Login successful" });
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// ✅ Sunucuyu başlat
-app.listen(PORT, () => {
-  console.log(`Server ${PORT} portunda çalışıyor.`);
-});
-
+// Ürünleri çekme endpoint'i
 app.get('/api/products', async (req, res) => {
   try {
     const products = await Product.find();
@@ -72,10 +32,8 @@ app.get('/api/products', async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch products' });
   }
 });
-// GEÇİCİ OLARAK BİRKEZLİK KULLAN
-import Product from './models/Product.js';
 
-// Test verilerini eklemek için IIFE fonksiyonu
+// GEÇİCİ OLARAK TEST VERİSİ EKLE
 (async () => {
   const count = await Product.countDocuments();
 
@@ -104,3 +62,8 @@ import Product from './models/Product.js';
     console.log("✔ Ürünler zaten var, tekrar eklenmedi");
   }
 })();
+
+// Sunucuyu başlat
+app.listen(PORT, () => {
+  console.log(`Server ${PORT} portunda çalışıyor.`);
+});

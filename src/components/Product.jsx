@@ -12,7 +12,7 @@ function Product({ product }) {
 
   return (
     <div className="product-card">
-      <img src={`/images/${image[0]}`} alt={title} />
+      <img src={`/public/images/${image[0]}`} alt={title} />
       <h3>{title}</h3>
       <strong>${price}</strong>
       <button className="details-btn" onClick={handleDetailsClick}>

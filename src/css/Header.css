@@ -105,3 +105,25 @@ body.dark-mode .search-input {
   font-weight: bold;
   font-family: cursive;
 }
+.logout-button {
+  margin-left: 15px;
+  padding: 6px 12px;
+  background-color: #f28ab2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: cursive;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #d94e88;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}

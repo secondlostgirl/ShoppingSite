@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import '../css/Login.css'; // Login ile aynı stilleri kullanalım
+import React, { useState } from "react";
+import "../css/Login.css"; // Login ile aynı stilleri kullanalım
 
 function Register() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phone: "",
+    address: "",
   });
 
   const handleChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -20,22 +22,22 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        alert('Account created successfully!');
+        alert("Account created successfully!");
       } else {
-        alert(data.message || 'Registration failed');
+        alert(data.message || "Registration failed");
       }
     } catch (err) {
       console.error(err);
-      alert('Server error');
+      alert("Server error");
     }
   };
 
@@ -78,6 +80,21 @@ function Register() {
           value={formData.password}
           onChange={handleChange}
           required
+        />
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone Number"
+          value={formData.phone}
+          onChange={handleChange}
+        />
+
+        <input
+          type="text"
+          name="address"
+          placeholder="Address"
+          value={formData.address}
+          onChange={handleChange}
         />
 
         <button type="submit">Create Account</button>

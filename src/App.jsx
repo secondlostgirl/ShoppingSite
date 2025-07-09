@@ -30,7 +30,6 @@ function App() {
   return (
     <>
       <PageContainer>
-        {/* Giriş ekranında header gösterme */}
         {location.pathname !== "/" && <Header />}
         <RouterConfig />
       </PageContainer>

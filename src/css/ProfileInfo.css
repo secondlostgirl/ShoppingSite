@@ -1,0 +1,43 @@
+.profile-container {
+  max-width: 500px;
+  margin: 30px auto;
+  background: #fff0f6;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #ffb6c1;
+}
+
+.profile-container h2,
+.profile-container h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #d63384;
+}
+
+.profile-section,
+.password-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input,
+textarea {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  padding: 10px;
+  background-color: #ff6ea1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background-color: #ff4081;
+}

@@ -1,21 +1,27 @@
 import { Routes, Route } from "react-router-dom";
+
 import Home from "../pages/Home";
-import ProductDetails from "../pages/ProductDetails";
-import CartPage from "../pages/CartPage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import FavoritesPage from "../pages/FavoritesPage"; // ← EKLENDİ
+import ProductDetails from "../pages/ProductDetails";
+import CartPage from "../pages/CartPage";
+import FavoritesPage from "../pages/FavoritesPage";
+import ProfileInfo from "../pages/ProfileInfo";
+import Orders from "../pages/Orders";
+import MyReviews from "../pages/MyReviews";
 
 function RouterConfig() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route path="/home" element={<Home />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/product/:id" element={<ProductDetails />} />
       <Route path="/cart" element={<CartPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/favorites" element={<FavoritesPage />} /> {/* FAVORİLER */}
+      <Route path="/favorites" element={<FavoritesPage />} />
+      <Route path="/profile" element={<ProfileInfo />} />
+      <Route path="/orders" element={<Orders />} />
+      <Route path="/reviews" element={<MyReviews />} />
     </Routes>
   );
 }

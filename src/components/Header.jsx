@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import "../css/Header.css";
 import { SlBasket } from "react-icons/sl";
 import { LuSun, LuMoon } from "react-icons/lu";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { resetCartOnLogout } from "../redux/slices/cartSlice";
 import { FaHeart } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { resetCartOnLogout } from "../redux/slices/cartSlice";
 
 function Header() {
   const [theme, setTheme] = useState(false);
-  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false); // 🔧 eksik olan state
 
-  // 🔧 Sepetteki toplam ürün adedi
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const cartItemCount = useSelector((state) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
   );
@@ -25,12 +26,11 @@ function Header() {
   const goHome = () => {
     navigate("/home");
   };
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // veya token vs.
+    localStorage.removeItem("user");
     dispatch(resetCartOnLogout());
-    navigate("/"); // Giriş sayfasına yönlendir
+    navigate("/");
   };
 
   return (
@@ -64,12 +64,30 @@ function Header() {
         ) : (
           <LuSun className="icon" onClick={changeTheme} />
         )}
+
         <div
           className="favorite-icon-wrapper"
           onClick={() => navigate("/favorites")}
         >
           <FaHeart className="icon" />
         </div>
+
+        {/* 👤 My Profile dropdown */}
+        <div
+          className="profile-menu"
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
+          <span className="profile-btn">👤 My Profile</span>
+          {showDropdown && (
+            <div className="profile-dropdown">
+              <Link to="/profile">Profile Information</Link>
+              <Link to="/addresses">My reviews</Link>
+              <Link to="/orders">My Orders</Link>
+            </div>
+          )}
+        </div>
+
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>

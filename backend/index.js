@@ -2,11 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+
 import cartRoutes from './routes/cart.js';
-import authRoutes from "./routes/auth.js"; // ✅ Login-register rotaları
+import authRoutes from "./routes/auth.js";
+import favoriteRoutes from "./routes/favoriteRoutes.js";
+import userRoutes from "./routes/userRoutes.js"; // ✅ DÜZELTİLDİ
 
 import Product from './models/Product.js';
-import favoriteRoutes from "./routes/favoriteRoutes.js";
 
 const app = express();
 const PORT = 5000;
@@ -14,18 +16,20 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// ROUTES
 app.use("/api/cart", cartRoutes);
-app.use("/api", authRoutes); // ✅ Login ve register burada olacak
+app.use("/api", authRoutes);
 app.use("/api/favorites", favoriteRoutes);
+app.use("/api/users", userRoutes); // ✅ endpoint düzeltildi: /api/user → /api/users
 
-// MongoDB bağlantısı
+// MongoDB BAĞLANTISI
 mongoose.connect('mongodb://localhost:27017/shopping', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log("MongoDB bağlantısı başarılı"))
   .catch((err) => console.log("MongoDB bağlantı hatası:", err));
 
-// Ürünleri çekme endpoint'i
+// ÜRÜN YÜKLEME ENDPOINTİ
 app.get('/api/products', async (req, res) => {
   try {
     const products = await Product.find();
@@ -35,11 +39,9 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// GEÇİCİ OLARAK TEST VERİSİ EKLE
+// GEÇİCİ TEST ÜRÜNLERİ
 (async () => {
   const count = await Product.countDocuments();
-
-  console.log(count)
   if (count === 0) {
     const testProducts = [
       {
@@ -54,10 +56,9 @@ app.get('/api/products', async (req, res) => {
         price: 19.99,
         description: "Stylish earrings",
         category: "jewelry",
-        image: ["product2.jpg","products3.jpg"],
+        image: ["product2.jpg", "products3.jpg"],
       },
     ];
-
     await Product.insertMany(testProducts);
     console.log("✔ Test ürünleri eklendi");
   } else {
@@ -65,7 +66,7 @@ app.get('/api/products', async (req, res) => {
   }
 })();
 
-// Sunucuyu başlat
+// SUNUCU BAŞLAT
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor.`);
 });

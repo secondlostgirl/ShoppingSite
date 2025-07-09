@@ -1,0 +1,19 @@
+.profile-page {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: #fff0f5;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+.profile-page h2 {
+  color: #d63384;
+  margin-bottom: 20px;
+}
+
+.profile-page p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}

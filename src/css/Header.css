@@ -127,3 +127,38 @@ body.dark-mode .search-input {
   gap: 10px;
   cursor: pointer;
 }
+.profile-menu {
+  position: relative;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.profile-btn {
+  padding: 8px 12px;
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 10px rgba(201, 20, 129, 0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.profile-dropdown a {
+  padding: 10px;
+  text-decoration: none;
+  color: rgb(100, 15, 82);
+  transition: background 0.2s;
+}
+
+.profile-dropdown a:hover {
+  background-color: #ffe2ed;
+}

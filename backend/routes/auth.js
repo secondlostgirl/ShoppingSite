@@ -32,26 +32,35 @@ router.post("/login", async (req, res) => {
 
 
 // Kayıt olma endpoint'i (şifre hash'li)
-router.post('/register', async (req, res) => {
+// routes/auth.js
+router.post("/register", async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    console.log("➡️ Kayıt isteği alındı:");
+    console.log(req.body); // ✅ Gelen veriyi gör
 
-    // 🔐 Şifreyi hashle
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const { firstName, lastName, email, password, phone, address } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10); // ✅ Şifre hashleniyor
 
     const newUser = new User({
       firstName,
       lastName,
       email,
-      password: hashedPassword, // <- hash'li olarak kaydediliyor
+      password: hashedPassword,
+      phone,
+      address,
     });
 
     await newUser.save();
-    res.status(201).json({ message: 'User created successfully!' });
+    res.status(201).json({ message: "User created successfully" });
   } catch (err) {
-    console.error('Kayıt hatası:', err);
-    res.status(500).json({ message: 'Sunucu hatası' });
+    console.error("❌ Register error:", err); // ✅ Hata detayı
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

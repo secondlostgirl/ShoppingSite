@@ -11,7 +11,6 @@ const BASE_URL = "http://localhost:5000";
 
 export const getAllProducts = createAsyncThunk("getAllProducts", async () => {
   const response = await axios.get(`${BASE_URL}/api/products`);
-  console.log(response);
   return response.data;
 });
 
@@ -50,10 +49,17 @@ export const productSlice = createSlice({
           "Butterfly Sunglasses",
         ];
 
-        state.products = action.payload.map((product, index) => ({
+        // 🔄 Ürünleri unique olarak set et (aynı ID'yi tekrar ekleme)
+        const updatedProducts = action.payload.map((product, index) => ({
           ...product,
           title: customTitles[index] || product.title,
         }));
+
+        const uniqueProducts = updatedProducts.filter(
+          (newProduct) => !state.products.some((p) => p._id === newProduct._id)
+        );
+
+        state.products = [...state.products, ...uniqueProducts];
       })
       .addCase(getAllProducts.rejected, (state, action) => {
         state.loading = false;

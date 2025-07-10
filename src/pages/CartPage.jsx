@@ -19,6 +19,8 @@ function CartPage() {
     return sum;
   }, 0);
 
+  console.log(cartItems);
+
   return (
     <div className="cart-page">
       <h2>Your Cart</h2>
@@ -27,8 +29,8 @@ function CartPage() {
       ) : (
         <>
           <ul className="cart-list">
-            {cartItems.map((item) => (
-              <li key={item._id || item.id} className="cart-item">
+            {cartItems.map((item, index) => (
+              <li key={item._id + index || item.id} className="cart-item">
                 <img
                   src={
                     Array.isArray(item.image)
@@ -39,15 +41,29 @@ function CartPage() {
                 />
                 <div>
                   <h3>{item.title}</h3>
+
+                  {/* BEDEN GÖSTERİMİ */}
+                  {item.selectedSize && (
+                    <p>
+                      <strong>Size:</strong> {item.selectedSize}
+                    </p>
+                  )}
+
                   <p>
                     {item.price !== undefined
                       ? `$${item.price.toFixed(2)} x ${item.quantity}`
                       : "Fiyat bulunamadı"}
                   </p>
+
                   <div className="quantity-controls">
                     <button
                       onClick={() =>
-                        dispatch(decreaseQuantity(item._id || item.id))
+                        dispatch(
+                          decreaseQuantity({
+                            id: item._id,
+                            selectedSize: item.selectedSize,
+                          })
+                        )
                       }
                     >
                       -
@@ -55,16 +71,27 @@ function CartPage() {
                     <span>{item.quantity}</span>
                     <button
                       onClick={() =>
-                        dispatch(increaseQuantity(item._id || item.id))
+                        dispatch(
+                          increaseQuantity({
+                            id: item._id,
+                            selectedSize: item.selectedSize,
+                          })
+                        )
                       }
                     >
                       +
                     </button>
                   </div>
+
                   <button
                     className="remove-btn"
                     onClick={() =>
-                      dispatch(removeFromCart(item._id || item.id))
+                      dispatch(
+                        removeFromCart({
+                          id: item._id,
+                          selectedSize: item.selectedSize,
+                        })
+                      )
                     }
                   >
                     Remove

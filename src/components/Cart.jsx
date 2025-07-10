@@ -1,4 +1,3 @@
-// components/Cart.jsx
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -9,12 +8,13 @@ import {
   setCartFromDatabase,
 } from "../redux/slices/cartSlice";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../css/Cart.css";
 
 function Cart() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
-  const user = useSelector((state) => state.auth.user); // kullanıcı bilgisi redux'ta saklanıyor varsayımı
+  const user = useSelector((state) => state.auth.user);
 
   const totalPrice = items
     .reduce((total, item) => total + item.price * item.quantity, 0)
@@ -41,27 +41,69 @@ function Cart() {
     <div className="cart-container">
       <h2>Sepetiniz</h2>
       {items.map((item) => (
-        <div key={item.id || item._id} className="cart-item">
-          <img
-            src={
-              Array.isArray(item.image)
-                ? `/images/${item.image[0]}`
-                : item.image
-            }
-            alt={item.title}
-          />
+        <div
+          key={`${item._id}-${item.selectedSize || "standard"}`}
+          className="cart-item"
+        >
+          <Link to={`/product/${item._id}`} className="cart-link">
+            <img
+              src={
+                Array.isArray(item.image)
+                  ? `/images/${item.image[0]}`
+                  : item.image
+              }
+              alt={item.title}
+              className="cart-image"
+            />
+          </Link>
+
           <div className="info">
-            <h3>{item.title}</h3>
+            <Link to={`/product/${item._id}`} className="cart-title-link">
+              <h3>{item.title}</h3>
+            </Link>
+
+            {item.selectedSize && (
+              <p>
+                <strong>Beden:</strong> {item.selectedSize}
+              </p>
+            )}
             <p>Fiyat: ${item.price}</p>
             <p>Miktar: {item.quantity}</p>
             <div className="actions">
-              <button onClick={() => dispatch(decreaseQuantity(item._id))}>
+              <button
+                onClick={() =>
+                  dispatch(
+                    decreaseQuantity({
+                      id: item._id,
+                      selectedSize: item.selectedSize,
+                    })
+                  )
+                }
+              >
                 -
               </button>
-              <button onClick={() => dispatch(increaseQuantity(item._id))}>
+              <button
+                onClick={() =>
+                  dispatch(
+                    increaseQuantity({
+                      id: item._id,
+                      selectedSize: item.selectedSize,
+                    })
+                  )
+                }
+              >
                 +
               </button>
-              <button onClick={() => dispatch(removeFromCart(item._id))}>
+              <button
+                onClick={() =>
+                  dispatch(
+                    removeFromCart({
+                      id: item._id,
+                      selectedSize: item.selectedSize,
+                    })
+                  )
+                }
+              >
                 Sil
               </button>
             </div>

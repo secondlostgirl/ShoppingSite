@@ -71,3 +71,21 @@ app.get('/api/products', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor.`);
 });
+const testProducts = [
+  {
+    title: "Pink Dress",
+    price: 49.99,
+    description: "Chic summer dress",
+    category: "clothing",
+    image: ["product4.jpg"],
+    sizes: ["34", "36", "38", "40", "42"],
+  },
+  {
+    title: "Heart Earrings",
+    price: 19.99,
+    description: "Stylish earrings",
+    category: "jewelry",
+    image: ["product2.jpg"],
+    sizes: [], // aksesuarlar için boş
+  },
+];

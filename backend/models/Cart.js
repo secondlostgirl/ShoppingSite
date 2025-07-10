@@ -10,6 +10,10 @@ const cartItemSchema = new mongoose.Schema({
     type: Number, 
     default: 1 
   },
+  selectedSize: {
+    type: String,
+    default: "standard",
+  },
 });
 
 const cartSchema = new mongoose.Schema({

@@ -3,7 +3,7 @@ import Cart from '../models/Cart.js';
 
 const router = express.Router();
 
-// Sepeti getir
+// 🛒 Sepeti getir
 router.get('/:userId', async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.params.userId }).populate('items.productId');
@@ -13,9 +13,9 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-// Sepete ürün ekle
+// 🛒 Sepete ürün ekle
 router.post('/add', async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { userId, productId, quantity, selectedSize } = req.body;
   try {
     let cart = await Cart.findOne({ userId });
 
@@ -23,11 +23,16 @@ router.post('/add', async (req, res) => {
       cart = new Cart({ userId, items: [] });
     }
 
-    const item = cart.items.find(i => i.productId.toString() === productId);
+    const item = cart.items.find(
+      i =>
+        i.productId.toString() === productId &&
+        i.selectedSize === (selectedSize || "standard")
+    );
+
     if (item) {
       item.quantity += quantity;
     } else {
-      cart.items.push({ productId, quantity });
+      cart.items.push({ productId, quantity, selectedSize: selectedSize || "standard" });
     }
 
     await cart.save();
@@ -37,7 +42,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Sepeti temizle
+// 🧹 Sepeti temizle
 router.post('/clear', async (req, res) => {
   const { userId } = req.body;
   try {
@@ -51,15 +56,21 @@ router.post('/clear', async (req, res) => {
     res.status(500).json({ message: 'Sepet silinemedi' });
   }
 });
-// Ürünün miktarını güncelle
+
+// 🔁 Ürünün miktarını güncelle (selectedSize ile)
 router.patch('/update', async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { userId, productId, selectedSize, quantity } = req.body;
 
   try {
     const cart = await Cart.findOne({ userId });
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
-    const item = cart.items.find((i) => i.productId.toString() === productId);
+    const item = cart.items.find(
+      (i) =>
+        i.productId.toString() === productId &&
+        i.selectedSize === (selectedSize || "standard")
+    );
+
     if (item) {
       item.quantity = quantity;
       await cart.save();
@@ -72,17 +83,22 @@ router.patch('/update', async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-// Sepetten ürün sil
+
+// ❌ Sepetten ürün sil (selectedSize ile)
 router.post('/remove', async (req, res) => {
-  const { userId, productId } = req.body;
+  const { userId, productId, selectedSize } = req.body;
 
   try {
     const cart = await Cart.findOne({ userId });
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
-    cart.items = cart.items.filter((item) => item.productId.toString() !== productId);
+    cart.items = cart.items.filter(
+      (item) =>
+        !(item.productId.toString() === productId &&
+          item.selectedSize === (selectedSize || "standard"))
+    );
+    
     await cart.save();
-
     res.status(200).json({ message: "Item removed" });
   } catch (err) {
     console.error("Remove item error:", err);
@@ -90,7 +106,4 @@ router.post('/remove', async (req, res) => {
   }
 });
 
-
-
-// ⬅️ Bu satır çok önemli! Başka türlü import edemezsin.
 export default router;

@@ -24,6 +24,7 @@ function ProductDetails() {
   const magnifierRef = useRef(null);
   const [favorites, setFavorites] = useState([]);
   const isFavorite = product && favorites.includes(product._id);
+  const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
     if (products.length === 0) {
@@ -63,7 +64,17 @@ function ProductDetails() {
   };
 
   const handleAddToCart = async () => {
-    dispatch(addToCart(product));
+    if (product?.sizes?.length > 0 && !selectedSize) {
+      toast.warning("Please choose size🩷.");
+      return;
+    }
+
+    const productWithSize = {
+      ...product,
+      selectedSize: selectedSize || "standard",
+    };
+
+    dispatch(addToCart(productWithSize));
     toast.success("Product successfully added to cart 🛍️");
 
     if (!userId) return;
@@ -75,6 +86,7 @@ function ProductDetails() {
         userId,
         productId: product._id,
         quantity: 1,
+        selectedSize: selectedSize || "standard",
       }),
     });
   };
@@ -214,6 +226,26 @@ function ProductDetails() {
         <h2>{product.title}</h2>
         <p>{product.description}</p>
         <strong>${product.price}</strong>
+
+        {product?.sizes?.length > 0 && (
+          <div className="size-selection">
+            <p>Choose Size:</p>
+            <div className="size-options">
+              {product.sizes.map((size) => (
+                <button
+                  key={size}
+                  className={`size-btn ${
+                    selectedSize === size ? "selected" : ""
+                  }`}
+                  onClick={() => setSelectedSize(size)}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <button className="add-to-cart-btn" onClick={handleAddToCart}>
           Add to Cart 🛍️
         </button>
@@ -225,6 +257,8 @@ function ProductDetails() {
 }
 
 export default ProductDetails;
+
+// ----------------------------------------
 
 function ProductReviews({ productId }) {
   const [reviews, setReviews] = useState([]);
@@ -270,9 +304,9 @@ function ProductReviews({ productId }) {
 
   return (
     <div className="review-section">
-      <h3>Ürün Değerlendirmeleri</h3>
+      <h3>Product Reviews</h3>
 
-      {reviews.length === 0 && <p>Henüz yorum yapılmamış.</p>}
+      {reviews.length === 0 && <p>No comments yet.</p>}
       {reviews.map((r, i) => (
         <div key={i} className="review-card">
           <p>
@@ -311,7 +345,7 @@ function ProductReviews({ productId }) {
           </div>
           <textarea
             rows="3"
-            placeholder="Yorumunuzu yazın..."
+            placeholder="Make a comment..."
             value={newReview.comment}
             onChange={(e) =>
               setNewReview({ ...newReview, comment: e.target.value })

@@ -160,7 +160,7 @@
   z-index: 10;
   background-repeat: no-repeat;
   background-position: center;
-  pointer-events: none;
+  
 }
 .product-image-container {
   position: relative;
@@ -201,6 +201,48 @@
 .review-card strong {
   color: #444;
 }
+.size-selection p {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.size-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 12px 0 24px;
+}
+
+.size-btn {
+  padding: 14px 18px;
+  min-width: 48px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.size-btn:hover {
+  border-color: #ff80aa;
+  background-color: #ffe6f0;
+  color: #d6006d;
+  transform: translateY(-1px);
+}
+
+.size-btn.selected {
+  background-color: #ff69b4;
+  color: #fff;
+  border-color: #ff69b4;
+  box-shadow: 0 3px 6px rgba(255, 105, 180, 0.3);
+}
+
+
 
 
 

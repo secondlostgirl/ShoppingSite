@@ -54,3 +54,23 @@
   color: white;
   cursor: pointer;
 }
+.cart-link {
+  text-decoration: none;
+}
+
+.cart-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cart-title-link {
+  text-decoration: none;
+  color: black;
+}
+
+.cart-title-link:hover {
+  text-decoration: underline;
+  color: #d6006d;
+}

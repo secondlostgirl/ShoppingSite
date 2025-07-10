@@ -6,7 +6,8 @@ const productSchema = new mongoose.Schema({
   description: String,
   image: [String],  // 🔧 BURASI DÜZELTİLDİ
   category: String,
-  stock: Number
+  stock: Number,
+  sizes: [String], // ✅ EKLENDİ: ["34", "36", "38"] gibi
 });
 
 const Product = mongoose.model('Product', productSchema);

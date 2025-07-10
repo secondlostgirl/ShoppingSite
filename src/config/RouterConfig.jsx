@@ -21,7 +21,7 @@ function RouterConfig() {
       <Route path="/favorites" element={<FavoritesPage />} />
       <Route path="/profile" element={<ProfileInfo />} />
       <Route path="/orders" element={<Orders />} />
-      <Route path="/reviews" element={<MyReviews />} />
+      <Route path="/my-reviews" element={<MyReviews />} />
     </Routes>
   );
 }

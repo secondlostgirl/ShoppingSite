@@ -82,7 +82,7 @@ function Header() {
           {showDropdown && (
             <div className="profile-dropdown">
               <Link to="/profile">Profile Information</Link>
-              <Link to="/addresses">My reviews</Link>
+              <Link to="/my-reviews">My reviews</Link>
               <Link to="/orders">My Orders</Link>
             </div>
           )}

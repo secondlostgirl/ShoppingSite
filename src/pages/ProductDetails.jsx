@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, loadCartFromDB } from "../redux/slices/cartSlice";
+import { addToCart } from "../redux/slices/cartSlice";
 import { getAllProducts } from "../redux/slices/productSlice";
 import { toast } from "react-toastify";
 import "../css/ProductDetails.css";
@@ -11,15 +11,19 @@ function ProductDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { products } = useSelector((store) => store.product);
-  const product = products.find((item) => item._id === id);
+
+  const product = useMemo(
+    () => products.find((item) => item._id?.toString() === id),
+    [products, id]
+  );
+
   const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [showMagnifier, setShowMagnifier] = useState(false);
   const magnifierRef = useRef(null);
-
   const [favorites, setFavorites] = useState([]);
-  const isFavorite = favorites.includes(product?._id);
+  const isFavorite = product && favorites.includes(product._id);
 
   useEffect(() => {
     if (products.length === 0) {
@@ -76,8 +80,11 @@ function ProductDetails() {
   };
 
   useEffect(() => {
-    if (product?.image?.length > 0) {
-      setSelectedImage(product.image[0]);
+    if (product?.image) {
+      const first = Array.isArray(product.image)
+        ? product.image[0]
+        : product.image;
+      setSelectedImage(first);
     }
   }, [product]);
 
@@ -96,10 +103,11 @@ function ProductDetails() {
   }, []);
 
   useEffect(() => {
-    if (!showMagnifier) return;
+    if (!showMagnifier || !selectedImage) return;
 
     const img = document.getElementById("magnifier-img");
     const glass = document.getElementById("magnifier-glass");
+
     if (!img || !glass) return;
 
     const zoom = 2;
@@ -117,8 +125,8 @@ function ProductDetails() {
     const getCursorPos = (e) => {
       const rect = img.getBoundingClientRect();
       return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: e.pageX - rect.left - window.scrollX,
+        y: e.pageY - rect.top - window.scrollY,
       };
     };
 
@@ -127,8 +135,14 @@ function ProductDetails() {
       const pos = getCursorPos(e);
       const w = glass.offsetWidth / 2;
       const h = glass.offsetHeight / 2;
-      const x = Math.max(Math.min(pos.x, img.width - w / zoom), w / zoom);
-      const y = Math.max(Math.min(pos.y, img.height - h / zoom), h / zoom);
+
+      let x = pos.x;
+      let y = pos.y;
+
+      if (x > img.width - w / zoom) x = img.width - w / zoom;
+      if (x < w / zoom) x = w / zoom;
+      if (y > img.height - h / zoom) y = img.height - h / zoom;
+      if (y < h / zoom) y = h / zoom;
 
       glass.style.left = `${x - w}px`;
       glass.style.top = `${y - h}px`;
@@ -148,10 +162,16 @@ function ProductDetails() {
       img.removeEventListener("mousemove", moveMagnifier);
       glass.removeEventListener("mousemove", moveMagnifier);
     };
-  }, [selectedImage, showMagnifier]);
+  }, [showMagnifier, selectedImage]);
 
   if (!product)
     return <p style={{ textAlign: "center" }}>Loading product details...</p>;
+
+  const imageArray = Array.isArray(product.image)
+    ? product.image
+    : product.image
+    ? [product.image]
+    : [];
 
   return (
     <div className="details-container">
@@ -178,7 +198,7 @@ function ProductDetails() {
         </div>
 
         <div className="thumbnail-container">
-          {product.image.map((img, idx) => (
+          {imageArray.map((img, idx) => (
             <img
               key={idx}
               src={`/images/${img}`}
@@ -197,9 +217,111 @@ function ProductDetails() {
         <button className="add-to-cart-btn" onClick={handleAddToCart}>
           Add to Cart 🛍️
         </button>
+
+        <ProductReviews productId={product._id} />
       </div>
     </div>
   );
 }
 
 export default ProductDetails;
+
+function ProductReviews({ productId }) {
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ rating: 0, comment: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/reviews/${productId}`)
+      .then((res) => res.json())
+      .then((data) => setReviews(data));
+  }, [productId]);
+
+  const handleSubmit = async () => {
+    if (!newReview.rating || !newReview.comment.trim()) {
+      toast.warning("Lütfen yorum ve puan girin.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    const res = await fetch(`http://localhost:5000/api/reviews/${productId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: user.userId,
+        rating: newReview.rating,
+        comment: newReview.comment,
+      }),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      setReviews((prev) => [...prev, result]);
+      setNewReview({ rating: 0, comment: "" });
+      toast.success("Yorum başarıyla eklendi!");
+    } else {
+      toast.error(result.error || "Yorum eklenemedi.");
+    }
+
+    setSubmitting(false);
+  };
+
+  return (
+    <div className="review-section">
+      <h3>Ürün Değerlendirmeleri</h3>
+
+      {reviews.length === 0 && <p>Henüz yorum yapılmamış.</p>}
+      {reviews.map((r, i) => (
+        <div key={i} className="review-card">
+          <p>
+            <strong>
+              {r.user?.firstName} {r.user?.lastName}
+            </strong>
+          </p>
+          <p>
+            {"⭐".repeat(r.rating)}
+            {"☆".repeat(5 - r.rating)}
+          </p>
+          <p>{r.comment}</p>
+          <p>
+            <small>{new Date(r.createdAt).toLocaleDateString()}</small>
+          </p>
+        </div>
+      ))}
+
+      {user && (
+        <div className="review-form">
+          <h4>Yorum Yap</h4>
+          <div className="rating-stars">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                onClick={() => setNewReview({ ...newReview, rating: star })}
+                style={{
+                  color: newReview.rating >= star ? "#f9a825" : "#ccc",
+                  cursor: "pointer",
+                  fontSize: "20px",
+                }}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+          <textarea
+            rows="3"
+            placeholder="Yorumunuzu yazın..."
+            value={newReview.comment}
+            onChange={(e) =>
+              setNewReview({ ...newReview, comment: e.target.value })
+            }
+          ></textarea>
+          <button disabled={submitting} onClick={handleSubmit}>
+            Gönder
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

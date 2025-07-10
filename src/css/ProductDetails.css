@@ -160,6 +160,7 @@
   z-index: 10;
   background-repeat: no-repeat;
   background-position: center;
+  pointer-events: none;
 }
 .product-image-container {
   position: relative;
@@ -185,6 +186,20 @@
   color: #ff6ea1;
   transform: scale(1.5);
   text-shadow: 0 0 5px #ff6ea1, 0 0 10px #ff6ea1, 0 0 20px #ffb6d5, 0 0 30px #ff6ea1;
+}
+.review-section {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+}
+.review-card {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: #fafafa;
+  border-radius: 5px;
+}
+.review-card strong {
+  color: #444;
 }
 
 

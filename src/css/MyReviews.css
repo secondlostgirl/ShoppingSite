@@ -1,0 +1,32 @@
+.my-reviews-container {
+  padding: 20px;
+}
+
+.review-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #fffafc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.review-product-link {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+}
+
+.review-product-image {
+  width: 100px;
+  height: auto;
+  margin-right: 15px;
+  border-radius: 8px;
+}
+
+.review-details {
+  display: flex;
+  flex-direction: column;
+}

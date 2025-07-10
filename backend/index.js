@@ -9,7 +9,7 @@ import favoriteRoutes from "./routes/favoriteRoutes.js";
 import userRoutes from "./routes/userRoutes.js"; // ✅ DÜZELTİLDİ
 
 import Product from './models/Product.js';
-
+import reviewRoutes from "./routes/review.js";
 const app = express();
 const PORT = 5000;
 
@@ -21,6 +21,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api", authRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/users", userRoutes); // ✅ endpoint düzeltildi: /api/user → /api/users
+app.use("/api/reviews", reviewRoutes);
 
 // MongoDB BAĞLANTISI
 mongoose.connect('mongodb://localhost:27017/shopping', {

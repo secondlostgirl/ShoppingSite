@@ -19,27 +19,35 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const { _id, selectedSize } = action.payload;
+      const { _id, selectedSize, selectedColor } = action.payload;
 
       const existingItem = state.items.find(
-        (item) => item._id === _id && item.selectedSize === selectedSize
+        (item) =>
+          item._id === _id &&
+          item.selectedSize === selectedSize &&
+          item.selectedColor === selectedColor
       );
 
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({
+          ...action.payload,
+          quantity: 1,
+          selectedColor: selectedColor || "default",
+        });
       }
-
-      localStorage.setItem("cartItems", JSON.stringify(state.items));
     },
 
     removeFromCart(state, action) {
-      const { id, selectedSize } = action.payload;
-
-      console.log(action.payload);
+      const { id, selectedSize, selectedColor } = action.payload;
       state.items = state.items.filter(
-        (item) => !(item._id === id && item.selectedSize === selectedSize)
+        (item) =>
+          !(
+            item._id === id &&
+            item.selectedSize === selectedSize &&
+            item.selectedColor === selectedColor
+          )
       );
       localStorage.setItem("cartItems", JSON.stringify(state.items));
 
@@ -52,15 +60,19 @@ const cartSlice = createSlice({
             userId: storedUser.userId,
             productId: id,
             selectedSize: selectedSize || "standard",
+            selectedColor: selectedColor || "default",
           }),
         });
       }
     },
 
     increaseQuantity(state, action) {
-      const { id, selectedSize } = action.payload;
+      const { id, selectedSize, selectedColor } = action.payload;
       const item = state.items.find(
-        (i) => i._id === id && i.selectedSize === selectedSize
+        (i) =>
+          i._id === id &&
+          i.selectedSize === selectedSize &&
+          i.selectedColor === selectedColor
       );
       if (item) {
         item.quantity++;
@@ -75,6 +87,7 @@ const cartSlice = createSlice({
               userId: storedUser.userId,
               productId: item._id,
               selectedSize: item.selectedSize,
+              selectedColor: item.selectedColor,
               quantity: item.quantity,
             }),
           });
@@ -83,9 +96,12 @@ const cartSlice = createSlice({
     },
 
     decreaseQuantity(state, action) {
-      const { id, selectedSize } = action.payload;
+      const { id, selectedSize, selectedColor } = action.payload;
       const item = state.items.find(
-        (i) => i._id === id && i.selectedSize === selectedSize
+        (i) =>
+          i._id === id &&
+          i.selectedSize === selectedSize &&
+          i.selectedColor === selectedColor
       );
       if (item && item.quantity > 1) {
         item.quantity--;
@@ -100,6 +116,7 @@ const cartSlice = createSlice({
               userId: storedUser.userId,
               productId: item._id,
               selectedSize: item.selectedSize,
+              selectedColor: item.selectedColor,
               quantity: item.quantity,
             }),
           });
@@ -125,6 +142,7 @@ const cartSlice = createSlice({
         image: item.productId.image,
         quantity: item.quantity,
         selectedSize: item.selectedSize || "standard",
+        selectedColor: item.selectedColor || "default",
       }));
       state.items = items;
       localStorage.setItem("cartItems", JSON.stringify(items));
@@ -140,6 +158,7 @@ const cartSlice = createSlice({
         image: item.productId.image,
         quantity: item.quantity,
         selectedSize: item.selectedSize || "standard",
+        selectedColor: item.selectedColor || "default",
       }));
 
       state.items = normalizedItems;

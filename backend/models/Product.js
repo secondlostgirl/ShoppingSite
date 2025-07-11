@@ -7,7 +7,11 @@ const productSchema = new mongoose.Schema({
   image: [String],  // 🔧 BURASI DÜZELTİLDİ
   category: String,
   stock: Number,
-  sizes: [String], // ✅ EKLENDİ: ["34", "36", "38"] gibi
+  sizes: [String], // ✅ EKLENDİ: ["34", "36", "38"] gibi7
+  colors: {
+  type: [String], // örn: ["red", "blue", "black"]
+  default: [],
+},
 });
 
 const Product = mongoose.model('Product', productSchema);

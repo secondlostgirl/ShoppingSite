@@ -19,8 +19,6 @@ function CartPage() {
     return sum;
   }, 0);
 
-  console.log(cartItems);
-
   return (
     <div className="cart-page">
       <h2>Your Cart</h2>
@@ -42,10 +40,15 @@ function CartPage() {
                 <div>
                   <h3>{item.title}</h3>
 
-                  {/* BEDEN GÖSTERİMİ */}
                   {item.selectedSize && (
                     <p>
                       <strong>Size:</strong> {item.selectedSize}
+                    </p>
+                  )}
+
+                  {item.selectedColor && (
+                    <p>
+                      <strong>Color:</strong> {item.selectedColor}
                     </p>
                   )}
 
@@ -62,6 +65,7 @@ function CartPage() {
                           decreaseQuantity({
                             id: item._id,
                             selectedSize: item.selectedSize,
+                            selectedColor: item.selectedColor,
                           })
                         )
                       }
@@ -75,6 +79,7 @@ function CartPage() {
                           increaseQuantity({
                             id: item._id,
                             selectedSize: item.selectedSize,
+                            selectedColor: item.selectedColor,
                           })
                         )
                       }
@@ -90,6 +95,7 @@ function CartPage() {
                         removeFromCart({
                           id: item._id,
                           selectedSize: item.selectedSize,
+                          selectedColor: item.selectedColor,
                         })
                       )
                     }

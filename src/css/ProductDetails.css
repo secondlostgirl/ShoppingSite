@@ -242,7 +242,46 @@
   box-shadow: 0 3px 6px rgba(255, 105, 180, 0.3);
 }
 
+.color-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
 
+.color-btn {
+  width: 70px;
+  height: 40px;
+  border: 2px solid #999;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  text-transform: capitalize;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-btn.pink {
+  background-color: #f48fb1;
+}
+.color-btn.blue {
+  background-color: #90caf9;
+}
+.color-btn.white {
+  background-color: #fefefe;
+  color: #333;
+}
+
+.color-btn.selected {
+  border: 3px solid #ff4081;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
+  transform: scale(1.05);
+}
 
 
 

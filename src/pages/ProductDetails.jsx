@@ -25,6 +25,7 @@ function ProductDetails() {
   const [favorites, setFavorites] = useState([]);
   const isFavorite = product && favorites.includes(product._id);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
 
   useEffect(() => {
     if (products.length === 0) {
@@ -72,6 +73,7 @@ function ProductDetails() {
     const productWithSize = {
       ...product,
       selectedSize: selectedSize || "standard",
+      selectedColor: selectedColor || "default",
     };
 
     dispatch(addToCart(productWithSize));
@@ -87,6 +89,7 @@ function ProductDetails() {
         productId: product._id,
         quantity: 1,
         selectedSize: selectedSize || "standard",
+        selectedColor: selectedColor || "default",
       }),
     });
   };
@@ -221,12 +224,12 @@ function ProductDetails() {
           ))}
         </div>
       </div>
-
       <div className="info-section">
         <h2>{product.title}</h2>
         <p>{product.description}</p>
         <strong>${product.price}</strong>
 
+        {/* SIZE SEÇİMİ */}
         {product?.sizes?.length > 0 && (
           <div className="size-selection">
             <p>Choose Size:</p>
@@ -246,6 +249,26 @@ function ProductDetails() {
           </div>
         )}
 
+        {/* COLOR SEÇİMİ */}
+        {product?.colors?.length > 0 && (
+          <div className="color-selection">
+            <p>Choose Color:</p>
+            <div className="color-options">
+              {product.colors.map((color) => (
+                <button
+                  key={color}
+                  className={`color-btn ${
+                    selectedColor === color ? "selected" : ""
+                  }`}
+                  onClick={() => setSelectedColor(color)}
+                >
+                  {color}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <button className="add-to-cart-btn" onClick={handleAddToCart}>
           Add to Cart 🛍️
         </button>
@@ -255,10 +278,6 @@ function ProductDetails() {
     </div>
   );
 }
-
-export default ProductDetails;
-
-// ----------------------------------------
 
 function ProductReviews({ productId }) {
   const [reviews, setReviews] = useState([]);
@@ -359,3 +378,5 @@ function ProductReviews({ productId }) {
     </div>
   );
 }
+
+export default ProductDetails;
